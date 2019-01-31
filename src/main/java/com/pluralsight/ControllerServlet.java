@@ -65,6 +65,9 @@ public class ControllerServlet extends HttpServlet {
 				case "/edit":
 					showEditForm(request, response);
 					break;
+				case "/update":
+					updateBook(request, response);
+					break;
         		default:
 				   listBooks(request, response);
     	           break;
@@ -83,6 +86,15 @@ public class ControllerServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/BookAdmin.jsp");
 		dispatcher.forward(request, response);
 	}
+
+	private void updateBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String title = request.getParameter("booktitle");
+		String author = request.getParameter("bookauthor");
+		Float price = Float.valueOf(request.getParameter("bookprice"));
+		int id = Integer.valueOf(request.getParameter("id"));
+		bookDAO.updateBook(new Book(id, title, author, price));
+		response.sendRedirect("list");
+	 }
 
 	private void listBooks(HttpServletRequest request, HttpServletResponse response)
 			throws ClassNotFoundException, SQLException, ServletException, IOException {
